@@ -77,7 +77,7 @@ for($i = 1; $i <= 34; $i++) {
 <head>
     <title>Test</title>
     <link rel="stylesheet" type="text/css" href="style.css"/>
-    <script src="contrib/Chart.js/Chart.js"></script>
+    <script src="contrib/Chart.js/Chart.min.js"></script>
 </head>
 <body>
 
