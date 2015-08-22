@@ -1,0 +1,53 @@
+body {
+    font-size: 11pt;
+    font-family: Verdana;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: -1em;
+}
+
+h2 {
+    margin-top: 2em;
+}
+
+.vertical-text {
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+
+    /* also accepts left, right, top, bottom coordinates; not required, but a good idea for styling */
+    -webkit-transform-origin: 50% 50%;
+    -moz-transform-origin: 50% 50%;
+    -ms-transform-origin: 50% 50%;
+    -o-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+
+    /* Should be unset in IE9+ I think. */
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+#ranks_ylabel {
+    position: relative;
+    top: 100px;
+    left: -550px;
+}
+
+#points_ylabel {
+    position: relative;
+    top: 200px;
+    left: -550px;
+}
+
+#chart_ranks {
+    width: 1024px;
+    height: 200px;
+}
+
+#chart_points {
+    width: 1024px;
+    height: 400px;
+}

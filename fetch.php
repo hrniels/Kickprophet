@@ -22,12 +22,15 @@ preg_match_all(
    $m
 );
 
+echo '<?php'."\n";
+echo 'return array('."\n";
 foreach($m[0] as $k => $v) {
-    // name
-    echo $m[2][$k].';';
-    // points
-    echo $m[3][$k].';';
-    // rank
-    echo $m[1][$k]."\n";
+    echo '    array('."\n";
+    echo '        "name" => "'.$m[2][$k].'",'."\n";
+    echo '        "points" => '.(int)($m[3][$k]).','."\n";
+    echo '        "rank" => '.(int)($m[1][$k])."\n";
+    echo '    ),'."\n";
 }
+echo ');'."\n";
+echo '?>'."\n";
 ?>
