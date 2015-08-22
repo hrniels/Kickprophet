@@ -70,12 +70,11 @@ for($i = 1; $i <= 34; $i++) {
         $players[$p['name']]['ranks'][] = -$p['rank'];
     }
 }
-
 ?>
 <!doctype html>
 <html>
 <head>
-    <title>Test</title>
+    <title>Kickprophet Bundesliga 2015/2016</title>
     <link rel="stylesheet" type="text/css" href="style.css"/>
     <script src="Chart.min.js"></script>
 </head>
