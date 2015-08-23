@@ -51,11 +51,11 @@ function print_graph($players, $days, $name) {
 $days = array();
 $players = array();
 for($i = 1; $i <= 34; $i++) {
-    if(!is_file('../data/'.$i.'.php'))
+    if(!is_file('data/'.$i.'.php'))
         break;
 
     $days[] = $i;
-    $day = include('../data/'.$i.'.php');
+    $day = include('data/'.$i.'.php');
 
     $max = 0;
     foreach($day as $p) {
