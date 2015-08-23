@@ -83,7 +83,7 @@ for($i = 1; $i <= 34; $i++) {
 <h1>Kickprophet Bundesliga 2015/2016</h1>
 
 <div align="center">
-    <h2>Ränge nach Spieltagen</h2>
+    <h2>R&auml;nge nach Spieltagen</h2>
     <?php print_players($players); ?>
     <div id="ranks_ylabel" class="vertical-text">Rang</div>
     <canvas id="chart_ranks"></canvas>
