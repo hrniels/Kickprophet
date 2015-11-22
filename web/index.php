@@ -65,8 +65,8 @@ for($i = 1; $i <= 34; $i++) {
 
     foreach($day as $p) {
         if(!isset($players[$p['name']]))
-            $players[$p['name']] = array('points' => array(), 'ranks' => array());
-        $players[$p['name']]['points'][] = $p['points'] - $max;
+            $players[$p['name']] = array('diff' => array(), 'ranks' => array());
+        $players[$p['name']]['diff'][] = $p['points'] - $max;
         $players[$p['name']]['ranks'][] = -$p['rank'];
     }
 }
@@ -91,8 +91,8 @@ for($i = 1; $i <= 34; $i++) {
 
     <h2>Punkte nach Spieltagen</h2>
     <?php print_players($players); ?>
-    <div id="points_ylabel" class="vertical-text">Punktdifferenz zum 1. Platz</div>
-    <canvas id="chart_points"></canvas>
+    <div id="diff_ylabel" class="vertical-text">Punktdifferenz zum 1. Platz</div>
+    <canvas id="chart_diff"></canvas>
     <div>Spieltag</div>
 </div>
 
@@ -111,7 +111,7 @@ Chart.defaults.global.tooltipTitleTemplate = "<%= label %>. Spieltag";
 
 <?php
 print_graph($players, $days, 'ranks');
-print_graph($players, $days, 'points');
+print_graph($players, $days, 'diff');
 ?>
 </script>
 

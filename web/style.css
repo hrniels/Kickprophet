@@ -36,7 +36,7 @@ h2 {
     left: -550px;
 }
 
-#points_ylabel {
+#diff_ylabel {
     position: relative;
     top: 200px;
     left: -550px;
@@ -47,7 +47,7 @@ h2 {
     height: 200px;
 }
 
-#chart_points {
+#chart_diff {
     width: 1024px;
     height: 400px;
 }
