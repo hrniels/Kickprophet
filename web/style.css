@@ -42,12 +42,23 @@ h2 {
     left: -550px;
 }
 
+#points_ylabel {
+    position: relative;
+    top: 200px;
+    left: -550px;
+}
+
 #chart_ranks {
     width: 1024px;
     height: 200px;
 }
 
 #chart_diff {
+    width: 1024px;
+    height: 400px;
+}
+
+#chart_points {
     width: 1024px;
     height: 400px;
 }
