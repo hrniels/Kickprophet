@@ -86,19 +86,19 @@ for($i = 1; $i <= 34; $i++) {
 <div align="center">
     <h2>R&auml;nge nach Spieltagen</h2>
     <?php print_players($players); ?>
-    <div id="ranks_ylabel" class="vertical-text">Rang</div>
+    <div id="ylabel_ranks" class="vertical-text">Rang</div>
     <canvas id="chart_ranks"></canvas>
     <div>Spieltag</div>
 
     <h2>Punktdifferenz nach Spieltagen</h2>
     <?php print_players($players); ?>
-    <div id="diff_ylabel" class="vertical-text">Punktdifferenz zum 1. Platz</div>
+    <div id="ylabel_diff" class="vertical-text">Punktdifferenz zum 1. Platz</div>
     <canvas id="chart_diff"></canvas>
     <div>Spieltag</div>
 
     <h2>Punkte nach Spieltagen</h2>
     <?php print_players($players); ?>
-    <div id="points_ylabel" class="vertical-text">Punkte</div>
+    <div id="ylabel_points" class="vertical-text">Punkte</div>
     <canvas id="chart_points"></canvas>
     <div>Spieltag</div>
 </div>

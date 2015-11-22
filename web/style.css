@@ -30,19 +30,19 @@ h2 {
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
 
-#ranks_ylabel {
+#ylabel_ranks {
     position: relative;
     top: 100px;
     left: -550px;
 }
 
-#diff_ylabel {
+#ylabel_diff {
     position: relative;
     top: 200px;
     left: -550px;
 }
 
-#points_ylabel {
+#ylabel_points {
     position: relative;
     top: 200px;
     left: -550px;
