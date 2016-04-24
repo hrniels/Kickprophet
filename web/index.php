@@ -2,6 +2,9 @@
 error_reporting(E_ALL | E_NOTICE | E_STRICT);
 ini_set('display_errors',1);
 
+define('YAXIS_ALIGN', 10);
+define('YAXIS_STEPS', 10);
+
 $colors = array(
     'red', 'blue', 'brown', 'green', 'orange', 'black'
 );
@@ -43,7 +46,7 @@ function print_data($players, $column) {
     }
 }
 
-function print_graph($players, $days, $name) {
+function print_graph($players, $graphs, $days, $name) {
     echo 'var data_'.$name.' = {'."\n";
     echo '    labels: ['.implode(', ',$days).'],'."\n";
     echo '    datasets: ['."\n";
@@ -53,7 +56,25 @@ function print_graph($players, $days, $name) {
 
     echo "\n";
     echo 'var ctx_'.$name.' = document.getElementById("chart_'.$name.'").getContext("2d");'."\n";
-    echo 'new Chart(ctx_'.$name.').Line(data_'.$name.', {});'."\n";
+    echo 'new Chart(ctx_'.$name.').Line(data_'.$name.', {'."\n";
+    if($name == 'ranks')
+        echo '    scaleLabel : "<%=-value%>",'."\n";
+    else {
+        $graphs[$name]['min'] -= YAXIS_ALIGN - 1;
+        $graphs[$name]['max'] += YAXIS_ALIGN - 1;
+        $graphs[$name]['min'] -= $graphs[$name]['min'] % YAXIS_ALIGN;
+        $graphs[$name]['max'] -= $graphs[$name]['max'] % YAXIS_ALIGN;
+
+        $graphs[$name]['step'] = round(($graphs[$name]['max'] - $graphs[$name]['min']) / YAXIS_STEPS);
+        $graphs[$name]['step'] -= $graphs[$name]['step'] % YAXIS_ALIGN;
+        $steps = (($graphs[$name]['max'] - $graphs[$name]['min']) / $graphs[$name]['step']);
+
+        echo '    scaleOverride : true,'."\n";
+        echo '    scaleSteps : '.$steps.','."\n";
+        echo '    scaleStepWidth : '.$graphs[$name]['step'].','."\n";
+        echo '    scaleStartValue : '.$graphs[$name]['min']."\n";
+    }
+    echo '});'."\n";
     echo "\n";
 }
 
@@ -63,6 +84,24 @@ if(isset($_GET['player']))
 
 $days = array();
 $players = array();
+$graphs = array(
+    'diff' => array(
+        'step' => 0,
+        'min' => PHP_INT_MAX,
+        'max' => PHP_INT_MIN,
+    ),
+    'ranks' => array(
+        'step' => 1,
+        'min' => PHP_INT_MAX,
+        'max' => PHP_INT_MIN,
+    ),
+    'points' => array(
+        'step' => 0,
+        'min' => PHP_INT_MAX,
+        'max' => PHP_INT_MIN,
+    )
+);
+
 for($i = 1; $i <= 34; $i++) {
     if(!is_file('data/'.$i.'.php'))
         break;
@@ -101,6 +140,8 @@ for($i = 1; $i <= 34; $i++) {
         );
         foreach($chg as $name => $val) {
             $players[$p['name']][$name][] = $val;
+            $graphs[$name]['min'] = min($graphs[$name]['min'],$val);
+            $graphs[$name]['max'] = max($graphs[$name]['max'],$val);
         }
     }
 }
@@ -145,16 +186,16 @@ function pad(n, width, z) {
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
 
-Chart.defaults.global.scaleLabel = "<%if(value < 0){%><%=-value%><%}else{%><%=value%><%}%>";
+Chart.defaults.global.scaleLabel = "<%=value%>";
 Chart.defaults.global.tooltipFontFamily = 'monospace';
 Chart.defaults.global.tooltipTemplate = "<%if (label){%><%=label%>: <%}%><%= value %>";
 Chart.defaults.global.multiTooltipTemplate = "<%if(value < 0){%><%=pad(-value, 3)%><%}else{%><%=pad(value, 3)%><%}%> : <%= datasetLabel %>";
 Chart.defaults.global.tooltipTitleTemplate = "<%= label %>. Spieltag";
 
 <?php
-print_graph($players, $days, 'ranks');
-print_graph($players, $days, 'diff');
-print_graph($players, $days, 'points');
+print_graph($players, $graphs, $days, 'ranks');
+print_graph($players, $graphs, $days, 'diff');
+print_graph($players, $graphs, $days, 'points');
 ?>
 </script>
 
