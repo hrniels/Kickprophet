@@ -2,6 +2,8 @@
 error_reporting(E_ALL | E_NOTICE | E_STRICT);
 ini_set('display_errors',1);
 
+define('INT_MIN', ~PHP_INT_MAX);
+define('INT_MAX', PHP_INT_MAX);
 define('YAXIS_ALIGN', 10);
 define('YAXIS_STEPS', 10);
 
@@ -87,18 +89,18 @@ $players = array();
 $graphs = array(
     'diff' => array(
         'step' => 0,
-        'min' => PHP_INT_MAX,
-        'max' => PHP_INT_MIN,
+        'min' => INT_MAX,
+        'max' => INT_MIN,
     ),
     'ranks' => array(
         'step' => 1,
-        'min' => PHP_INT_MAX,
-        'max' => PHP_INT_MIN,
+        'min' => INT_MAX,
+        'max' => INT_MIN,
     ),
     'points' => array(
         'step' => 0,
-        'min' => PHP_INT_MAX,
-        'max' => PHP_INT_MIN,
+        'min' => INT_MAX,
+        'max' => INT_MIN,
     )
 );
 
