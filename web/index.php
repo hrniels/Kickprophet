@@ -6,11 +6,20 @@ $colors = array(
     'red', 'blue', 'brown', 'green', 'orange', 'black'
 );
 
-function print_players($players) {
+function print_players($players, $link = false, $cur = '') {
     global $colors;
     $i = 0;
     foreach(array_keys($players) as $name) {
-        echo '<span style="color: '.$colors[$i].';">'.$name.'</span>&nbsp;&nbsp;'."\n    ";
+        if($link)
+            echo '<a href=?player='.$name.'>';
+        if($name == $cur)
+            echo '<b>';
+        echo '<span style="color: '.$colors[$i].';">'.$name.'</span>';
+        if($name == $cur)
+            echo '</b>';
+        if($link)
+            echo '</a>';
+        echo '&nbsp;&nbsp;'."\n    ";
         $i++;
     }
     echo '<br />'."\n";
@@ -48,6 +57,10 @@ function print_graph($players, $days, $name) {
     echo "\n";
 }
 
+$curplayer = '';
+if(isset($_GET['player']))
+    $curplayer = $_GET['player'];
+
 $days = array();
 $players = array();
 for($i = 1; $i <= 34; $i++) {
@@ -56,19 +69,39 @@ for($i = 1; $i <= 34; $i++) {
 
     $days[] = $i;
     $day = include('data/'.$i.'.php');
-
-    $max = 0;
-    foreach($day as $p) {
-        if($p['points'] > $max)
-            $max = $p['points'];
+    if($curplayer != '') {
+        foreach($day as $p) {
+            if($p['name'] == $curplayer) {
+                $ref = $p['points'];
+                break;
+            }
+        }
+    }
+    else {
+        $ref = 0;
+        foreach($day as $p) {
+            if($p['points'] > $ref)
+                $ref = $p['points'];
+        }
     }
 
     foreach($day as $p) {
-        if(!isset($players[$p['name']]))
-            $players[$p['name']] = array('diff' => array(), 'ranks' => array(), 'points' => array());
-        $players[$p['name']]['diff'][] = $p['points'] - $max;
-        $players[$p['name']]['ranks'][] = -$p['rank'];
-        $players[$p['name']]['points'][] = $p['points'];
+        if(!isset($players[$p['name']])) {
+            $players[$p['name']] = array(
+                'diff' => array(),
+                'ranks' => array(),
+                'points' => array()
+            );
+        }
+
+        $chg = array(
+            'diff' => $p['points'] - $ref,
+            'ranks' => -$p['rank'],
+            'points' => $p['points']
+        );
+        foreach($chg as $name => $val) {
+            $players[$p['name']][$name][] = $val;
+        }
     }
 }
 ?>
@@ -81,7 +114,7 @@ for($i = 1; $i <= 34; $i++) {
 </head>
 <body>
 
-<h1>Kickprophet Bundesliga 2015/2016</h1>
+<h1><a href="?">Kickprophet Bundesliga 2015/2016</a></h1>
 
 <div align="center">
     <h2>R&auml;nge nach Spieltagen</h2>
@@ -91,8 +124,10 @@ for($i = 1; $i <= 34; $i++) {
     <div>Spieltag</div>
 
     <h2>Punktdifferenz nach Spieltagen</h2>
-    <?php print_players($players); ?>
-    <div id="ylabel_diff" class="vertical-text">Punktdifferenz zum 1. Platz</div>
+    <?php print_players($players, true, $curplayer); ?>
+    <div id="ylabel_diff" class="vertical-text">
+    Punktdifferenz <?php if($curplayer != '') echo "zu ".$curplayer; else echo "zum 1. Platz"; ?>
+    </div>
     <canvas id="chart_diff"></canvas>
     <div>Spieltag</div>
 
