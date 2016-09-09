@@ -13,10 +13,11 @@ $colors = array(
 
 function print_players($players, $link = false, $cur = '') {
     global $colors;
+    global $folder;
     $i = 0;
     foreach(array_keys($players) as $name) {
         if($link)
-            echo '<a href=?player='.$name.'>';
+            echo '<a href=?season='.$folder.'&player='.$name.'>';
         if($name == $cur)
             echo '<b>';
         echo '<span style="color: '.$colors[$i].';">'.$name.'</span>';
@@ -68,7 +69,8 @@ function print_graph($players, $graphs, $days, $name) {
         $graphs[$name]['max'] -= $graphs[$name]['max'] % YAXIS_ALIGN;
 
         $graphs[$name]['step'] = round(($graphs[$name]['max'] - $graphs[$name]['min']) / YAXIS_STEPS);
-        $graphs[$name]['step'] -= $graphs[$name]['step'] % YAXIS_ALIGN;
+        if($graphs[$name]['step'] > ($graphs[$name]['step'] % YAXIS_ALIGN))
+            $graphs[$name]['step'] -= $graphs[$name]['step'] % YAXIS_ALIGN;
         $steps = (($graphs[$name]['max'] - $graphs[$name]['min']) / $graphs[$name]['step']);
 
         echo '    scaleOverride : true,'."\n";
@@ -83,6 +85,12 @@ function print_graph($players, $graphs, $days, $name) {
 $curplayer = '';
 if(isset($_GET['player']))
     $curplayer = $_GET['player'];
+
+$folders = array('bl1516', 'bl1617');
+if(isset($_GET['season']) && array_search($_GET['season'],$folders) !== false)
+    $folder = $_GET['season'];
+else
+    $folder = $folders[count($folders) - 1];
 
 $days = array();
 $players = array();
@@ -104,12 +112,12 @@ $graphs = array(
     )
 );
 
-for($i = 1; $i <= 34; $i++) {
-    if(!is_file('data/'.$i.'.php'))
+for($i = 1; $i <= 35; $i++) {
+    if(!is_file($folder.'/'.$i.'.php'))
         break;
 
     $days[] = $i;
-    $day = include('data/'.$i.'.php');
+    $day = include($folder.'/'.$i.'.php');
     if($curplayer != '') {
         foreach($day as $p) {
             if($p['name'] == $curplayer) {
@@ -151,13 +159,20 @@ for($i = 1; $i <= 34; $i++) {
 <!doctype html>
 <html>
 <head>
-    <title>Kickprophet Bundesliga 2015/2016</title>
+    <title>Kickprophet Bundesliga</title>
     <link rel="stylesheet" type="text/css" href="style.css"/>
     <script src="Chart.min.js"></script>
 </head>
 <body>
 
-<h1><a href="?">Kickprophet Bundesliga 2015/2016</a></h1>
+<h1>Kickprophet Bundesliga <?php
+foreach($folders as $f) {
+    $name = substr($f,2,2).'/'.substr($f,4,2);
+    if($f == $folder)
+        $name = '<b>'.$name.'</b>';
+    echo '<a href="?season='.$f.'">'.$name.'</a> ';
+}
+?></h1>
 
 <div align="center">
     <h2>R&auml;nge nach Spieltagen</h2>
